@@ -1,0 +1,243 @@
+{
+  "info": {
+    "_postman_id": "fa24c589-49b4-4aa9-8d51-7ec04a336fac",
+    "name": "hub_de_leitura",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49992274",
+    "_collection_link": "https://go.postman.co/collection/49992274-fa24c589-49b4-4aa9-8d51-7ec04a336fac?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Lista todos os livros disponiveis",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Stat 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Deve validar a propriedade books\", function(){\r",
+              "pm.expect(pm.response.json()).to.have.property(\"books\")\r",
+              "\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/books",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "books"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "lista livro usando filtros",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "\r",
+              "\r",
+              "// 1. Protocolo\r",
+              "pm.test(\"deve validar o status de code:200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// 2. Integridade\r",
+              "pm.test(\" Deve validar se trouxe o livro Harry Potter e a Pedra Filosofal,\", function () {\r",
+              "    pm.expect(pm.response.text()).to.include(\"Harry Potter e a Pedra Filosofal\");\r",
+              "});\r",
+              "\r",
+              "//3.Perfomace\r",
+              "pm.test(\"Tempo de resposta inferior a 200ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/books?category=Fantasia&available=true&limit=3&offset=0&orderBy=title&order=ASC' \\\n  -H 'accept: application/json",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "books"
+          ],
+          "query": [
+            {
+              "key": "category",
+              "value": "Fantasia"
+            },
+            {
+              "key": "available",
+              "value": "true"
+            },
+            {
+              "key": "limit",
+              "value": "3"
+            },
+            {
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "key": "orderBy",
+              "value": "title"
+            },
+            {
+              "key": "order",
+              "value": "ASC' \\\n  -H 'accept: application/json"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cadastra Usuario",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "\r",
+              "//1. Protocolo\r",
+              "\r",
+              "pm.test(\"Deve validar o codigo: 201\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "//2. Integridade \r",
+              "\r",
+              "pm.test(\"Deve validar a mensagem de suceso\", function () {\r",
+              "    pm.expect(pm.response.text()).to.include(\"Usuário criado com sucesso\");\r",
+              "});\r",
+              "\r",
+              "//3. Tempo de resposta \r",
+              "\r",
+              "pm.test(\"Tempo de resposta menos do que: 200ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "\r\n{\r\n  \"name\": \"Maria Santos\",\r\n  \"email\": \"bruno43@email.com\",\r\n  \"password\": \"senha123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/users",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cadastra Usuário com email invalido",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "\r",
+              "//1. Protocolo\r",
+              "\r",
+              "pm.test(\"Deve validar o codigo: 400\", function () {\r",
+              "    pm.response.to.have.status(400);\r",
+              "});\r",
+              "\r",
+              "//2. Integridade \r",
+              "\r",
+              "pm.test(\"Deve validar a mensagem de erro \", function () {\r",
+              "    pm.expect(pm.response.text()).to.include(\"Formato de email inválido.\");\r",
+              "});\r",
+              "\r",
+              "//3. Tempo de resposta \r",
+              "\r",
+              "pm.test(\"Tempo de resposta menos do que: 200ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "\r\n{\r\n  \"name\": \"Maria Santos\",\r\n  \"email\": \"bruno43mgail.com\",\r\n  \"password\": \"senha123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/users",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
